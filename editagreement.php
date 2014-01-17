@@ -43,14 +43,42 @@ Resource_Type - Resource_Type_ID, Resource_ID, Resource_Type_Name (dropdown)
 	<br><br>
 
     <div style = "text-align: center"> 
-		<form action="addagreement.php" method="POST" enctype="multipart/form-data"> 
+		<form action="editagreement.php" method="POST" enctype="multipart/form-data"> 
+<?php 
+	$agreementid = $_GET['agreementid'];
+
+	$link = mysqli_connect('localhost', 'root', 'password', 'final_agreements');
+	if (mysqli_connect_errno())
+	{
+		echo "Failed to connect to MySQL: " . mysqli_connect_error();
+	}
+
+	$query="SELECT * FROM Agreement WHERE Agreement_ID=".$agreementid;
+	$result = mysqli_query($link,$query);
+	while($row = mysqli_fetch_array($result)) {
+			echo "<tr>";
+			echo "<td>". $row['Agreement_ID'] . "<td>" . $row['Agreement_Title'];
+			echo "</tr>";
+			$agreementtitle=$row['Agreement_Title'];
+			$companion=$row['Companion'];
+			$companiondetail=$row['Companion_details'];
+			$agreementsource=$row['Agreement_source'];
+			$agreementpurpose=$row['Agreement_purpose'];
+			$agreementlaterality=$row['Agreement_laterallity'];
+		}
+		
+
+
+?>
+
+
+
  <b>Agreement Title: </b> 
-            <input type="text" name="agreementtitle" size="50" value= "<?php if (!empty($_POST['agreementtitle'])) echo $_POST['agreementtitle']; ?>"> 
+            <input type="text" name="agreementtitle" size="50" value= "<?php echo $agreementtitle; ?>"> 
 
              <b>Companion: </b> 
 
              <select name="companion"> 
-                    <option value="<?php if (!empty($_POST['companion'])) echo $_POST['companion']; ?>" selected="selected"></option>
                     <?php
 						$link = mysqli_connect('localhost', 'root', 'password', 'final_agreements');
 						if (mysqli_connect_errno())
@@ -60,7 +88,7 @@ Resource_Type - Resource_Type_ID, Resource_ID, Resource_Type_Name (dropdown)
 						$query = "SELECT DISTINCT Companion FROM Agreement";
 						$result = mysqli_query($link,$query);
 						while($row = mysqli_fetch_array($result)){
-							if (!empty($_POST['companion']) && $_POST['companion']==$row['Companion'])
+							if ($companion==$row['Companion'])
 								$selected="selected";
 							else
 								$selected= "";
@@ -70,20 +98,19 @@ Resource_Type - Resource_Type_ID, Resource_ID, Resource_Type_Name (dropdown)
              </select>
 
              <b>Companion Details: </b> 
-            <input type="text" name="companiondetail" size="50" value="<?php if (!empty($_POST['companiondetail'])) echo $_POST['companiondetail']; ?>"> 
+            <input type="text" name="companiondetail" size="50" value="<?php echo $companiondetail; ?>"> 
 <br><br><br>
             <br>
              <b>Agreement Source: </b> 
-            <input type="text" name="agreementsource" size="50" value="<?php if (!empty($_POST['agreementsource'])) echo $_POST['agreementsource']; ?>"> 
+            <input type="text" name="agreementsource" size="50" value="<?php echo $agreementsource; ?>"> 
 
 
              <b>Agreement Purpose: </b> 
-            <input type="text" name="agreementpurpose" size="50" value="<?php if (!empty($_POST['agreementpurpose'])) echo $_POST['agreementpurpose']; ?>"> 
+            <input type="text" name="agreementpurpose" size="50" value="<?php echo $agreementpurpose; ?>"> 
 
 
  			<b>Agreement Laterality: </b> 
            	<select name="agreementlaterality"> 
-                    <option value="<?php if (!empty($_POST['agreementlaterality'])) echo $_POST['agreementlaterality']; ?>" selected="selected"></option>
                     <?php
 						$link = mysqli_connect('localhost', 'root', 'password', 'final_agreements');
 						if (mysqli_connect_errno())
@@ -93,7 +120,7 @@ Resource_Type - Resource_Type_ID, Resource_ID, Resource_Type_Name (dropdown)
 						$query = "SELECT DISTINCT Agreement_laterallity FROM Agreement";
 						$result = mysqli_query($link,$query);
 						while($row = mysqli_fetch_array($result)){
-							if (!empty($_POST['agreementlaterality']) && $_POST['agreementlaterality']==$row['Agreement_laterallity'])
+							if ($agreementlaterality==$row['Agreement_laterallity'])
 								$selected="selected";
 							else
 								$selected= "";

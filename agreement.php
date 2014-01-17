@@ -25,10 +25,20 @@ echo "<html>
         <div class='wrapper'>";
 echo "<table border = '1'>";
 $count = 1;
+
 while($row = mysqli_fetch_array($result))
   {
+    $id=$row['Agreement_ID'];
+    echo $id;
   echo "<tr>";
-  echo "<td>". $row['Agreement_ID'] . "<td>" . $row['Agreement_Title'] . "<td> <a href = 'test.php?page=" . $count . "'>View</a>" . "<td> <a href = 'agreement_pdfs/". $count . ".pdf' target='_blank'>View and Download</a>";
+  echo "<td>". $row['Agreement_ID'] . "</td><td>" . $row['Agreement_Title'] . "</td><td> <a href = 'test.php?page=" . $row['Agreement_ID'] . "'>View</a></td>" . "<td> <a href = 'agreement_pdfs/". $count . ".pdf' target='_blank'>View and Download</a> </td>";
+  
+  echo "<td><a onclick='return confirm(\"Are you sure you want to delete this record?\")' href='deleteagreement.php?agreementid=$id'>Delete</a></td>";
+  echo "<td><a  href='editagreement.php?agreementid=$id'>Edit</a></td>";
+
+
+
+
   echo "</tr>";
   $count++;
   }
