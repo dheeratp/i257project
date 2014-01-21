@@ -65,6 +65,22 @@ Resource_Type - Resource_Type_ID, Resource_ID, Resource_Type_Name (dropdown)
 			$agreementsource=$row['Agreement_source'];
 			$agreementpurpose=$row['Agreement_purpose'];
 			$agreementlaterality=$row['Agreement_laterallity'];
+
+			$yearoforigin=$row['Year_of_Origin'];
+			$yearoforigindetail=$row['Year_of_Origin_Detail'];
+			$agreementpoliticaldriver=$row['Agreement_political_driver'];
+			$additionalcomments=$row['Additional_comments'];
+			$entryauthor=$row['Entry_Author'];
+
+
+		}
+
+
+		$query1="SELECT * FROM Agreement_types WHERE Agreement_ID=".$agreementid;
+		$result1 = mysqli_query($link,$query1);
+		while($row = mysqli_fetch_array($result1)) {
+			$agreementtype[]=$row['Agreement_type'];
+			$agreementtypedetail=$row['Agreement_Type_Detail'];
 		}
 		
 
@@ -130,39 +146,20 @@ Resource_Type - Resource_Type_ID, Resource_ID, Resource_Type_Name (dropdown)
              </select>
 <br><br><br>
     <b>Year of Origin: </b> 
-            <input type="text" name="yearoforigin" size="50" value="<?php if (!empty($_POST['yearoforigin'])) echo $_POST['yearoforigin']; ?>"> 
+            <input type="text" name="yearoforigin" size="50" value="<?php echo $yearoforigin; ?>"> 
 
              <b>Year of Origin Detail: </b> 
-            <input type="text" name="yearoforigindetail" size="50" value="<?php if (!empty($_POST['yearoforigindetail'])) echo $_POST['yearoforigindetail']; ?>"> 
+            <input type="text" name="yearoforigindetail" size="50" value="<?php echo $yearoforigindetail; ?>"> 
 
              <b>Agreement political driver: </b> 
-            <input type="text" name="agreementpoliticaldriver" size="50" value="<?php if (!empty($_POST['agreementpoliticaldriver'])) echo $_POST['agreementpoliticaldriver']; ?>"> 
+            <input type="text" name="agreementpoliticaldriver" size="50" value="<?php echo $agreementpoliticaldriver; ?>"> 
 
 <br><br><br>
              <b>Additional_comments: </b> 
-            <input type="text" name="additionalcomments" size="50" value="<?php if (!empty($_POST['additionalcomments'])) echo $_POST['additionalcomments']; ?>"> 
+            <input type="text" name="additionalcomments" size="50" value="<?php echo $additionalcomments; ?>"> 
 
 
-			 <b>Entry Author: </b> 
-			            <select name="entryauthor"> 
-			                    <option value="<?php if (!empty($_POST['entryauthor'])) echo $_POST['entryauthor']; ?>" selected="selected"></option>
-			                    <?php
-									$link = mysqli_connect('localhost', 'root', 'password', 'final_agreements');
-									if (mysqli_connect_errno())
-									{
-										echo "Failed to connect to MySQL: " . mysqli_connect_error();
-									}
-									$query = "SELECT DISTINCT Entry_Author FROM Agreement";
-									$result = mysqli_query($link,$query);
-									while($row = mysqli_fetch_array($result)){
-										if (!empty($_POST['entryauthor']) && $_POST['entryauthor']==$row['Entry_Author'])
-											$selected="selected";
-										else
-											$selected= "";
-										echo "<option value = '" . $row['Entry_Author'] . "' $selected>" . $row['Entry_Author'] . "</option>";
-									}
-								?>
-			         </select>
+			
 		<b>Agreement type : </b> 
  		 <select name="agreementtype[]" multiple="multiple"> 
                     <?php
@@ -174,10 +171,8 @@ Resource_Type - Resource_Type_ID, Resource_ID, Resource_Type_Name (dropdown)
 						$query = "SELECT DISTINCT Agreement_type FROM Agreement_types";
 						$result = mysqli_query($link,$query);
 						while($row = mysqli_fetch_array($result)){
-							
-							if(isset($_POST['agreementtype']) && is_array($_POST['agreementtype'])){
-								
-								foreach ($_POST['agreementtype'] as $selectedOption){
+															
+								foreach ($agreementtype as $selectedOption){
 										if (!empty($selectedOption) && $selectedOption==$row['Agreement_type'])
 										{
 											$selected="selected";
@@ -189,13 +184,7 @@ Resource_Type - Resource_Type_ID, Resource_ID, Resource_Type_Name (dropdown)
 									
 									}
 									echo "<option value = '" . $row['Agreement_type'] . "' $selected>" . $row['Agreement_type'] . "</option>";
-
-
-							}
-							else
-								echo "<option value = '" . $row['Agreement_type'] . "' >" . $row['Agreement_type'] . "</option>";
-
-
+						
 						}
 					?>
              </select>

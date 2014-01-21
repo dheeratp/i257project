@@ -12,6 +12,7 @@
             <span>Indigenous Communities Co-governance Agreements Access System</span>
         </div>
     </header>";
+    
 	echo "<div style = 'text-align: center'><iframe src='agreement_pdfs/" . $page_number . ".pdf' style='width:600px; height:500px; margin:auto;' align= 'middle' frameborder='0'>Sample pdf</iframe></div>";
 	echo "
 	</html>";
